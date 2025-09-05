@@ -1,0 +1,13 @@
+{
+    "name": "tu_usuario/recreos_admin",
+    "description": "Sistema de administración de recreos Huanta y Luricocha",
+    "type": "project",
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    }
+}
