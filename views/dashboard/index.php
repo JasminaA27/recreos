@@ -1,3 +1,10 @@
+<?php
+// views/dashboard/index.php
+
+// Incluir cabecera
+include 'includes/header.php';
+?>
+
 <div class="dashboard">
     <!-- Sidebar -->
     <div class="sidebar">
@@ -43,7 +50,7 @@
                     <i class="fas fa-utensils"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>40</h3>
+                    <h3><?php echo $ofertas_activas; ?></h3>
                     <p>Ofertas Activas</p>
                 </div>
             </div>
@@ -70,5 +77,36 @@
         </div>
         
         <!-- Resto del contenido del dashboard -->
+        <div class="recent-activities">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Recreos Recientes</h3>
+                    <a href="index.php?controller=Recreo&action=index" class="btn-link">Ver todos</a>
+                </div>
+                <div class="card-body">
+                    <?php
+                    $recreos_recientes = $this->recreo->getRecent(5);
+                    if ($recreos_recientes) {
+                        foreach ($recreos_recientes as $recreo) {
+                            echo '<div class="activity-item">';
+                            echo '<div class="activity-info">';
+                            echo '<h4>' . $recreo['nombre'] . '</h4>';
+                            echo '<p>' . $recreo['direccion'] . ' - ' . $recreo['ubicacion'] . '</p>';
+                            echo '</div>';
+                            echo '<div class="activity-time">' . date('d/m/Y', strtotime($recreo['fecha_creacion'])) . '</div>';
+                            echo '</div>';
+                        }
+                    } else {
+                        echo '<p>No hay recreos registrados.</p>';
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<?php
+// Incluir pie de página
+include 'includes/footer.php';
+?>

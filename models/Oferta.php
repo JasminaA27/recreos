@@ -10,6 +10,7 @@ class Oferta {
     public $descripcion;
     public $precio;
     public $disponible;
+    public $fecha_creacion;
 
     public function __construct($db) {
         $this->conn = $db;
@@ -24,6 +25,15 @@ class Oferta {
         $stmt->execute();
         return $stmt;
     }
+    // Agregar este método a la clase Oferta
+
+public function countActive() {
+    $query = "SELECT COUNT(*) as total FROM ofertas WHERE disponible = 1";
+    $stmt = $this->conn->prepare($query);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row['total'];
+}
 
     // Otros métodos para crear, actualizar y eliminar ofertas
 }
