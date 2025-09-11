@@ -9,6 +9,7 @@ include 'includes/header.php';
 
 <div class="dashboard">
     <!-- Sidebar -->
+     <li><a href="index.php?controller=User&action=index"><i class="fas fa-users"></i> Usuarios</a></li>
     <div class="sidebar">
         <div class="sidebar-header">
             <h3><i class="fas fa-utensils"></i> RECREOS HUANTA LURICOCHA</h3>
@@ -38,6 +39,7 @@ include 'includes/header.php';
                     <span>Horarios</span>
                 </a>
             </li>
+            <li><a href="index.php?controller=User&action=index"><i class="fas fa-users"></i> Usuarios</a></li>
      
             <li class="logout">
                 <a href="index.php?controller=Auth&action=logout">

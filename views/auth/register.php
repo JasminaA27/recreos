@@ -1,5 +1,5 @@
 <?php
-// views/auth/login.php
+// views/auth/register.php
 
 // Si ya está logueado, redirigir al dashboard
 if (isset($_SESSION['user_id'])) {
@@ -13,8 +13,8 @@ include '../includes/header.php';
 <div class="auth-container">
     <div class="auth-card">
         <div class="auth-header">
-            <h2>Iniciar Sesión</h2>
-            <p>Ingresa a tu cuenta</p>
+            <h2>Crear Cuenta</h2>
+            <p>Regístrate para comenzar</p>
         </div>
         
         <div class="auth-body">
@@ -24,29 +24,39 @@ include '../includes/header.php';
                 </div>
             <?php endif; ?>
             
-            <?php if (isset($success)): ?>
-                <div class="alert alert-success">
-                    <?php echo $success; ?>
+            <form action="index.php?controller=Auth&action=register" method="POST">
+                <div class="form-group">
+                    <label for="nombre_completo">Nombre Completo</label>
+                    <input type="text" id="nombre_completo" name="nombre_completo" required>
                 </div>
-            <?php endif; ?>
-            
-            <form action="index.php?controller=Auth&action=login" method="POST">
+                
                 <div class="form-group">
                     <label for="username">Usuario</label>
                     <input type="text" id="username" name="username" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="password">Contraseña</label>
-                    <input type="password" id="password" name="password" required>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
                 </div>
                 
-                <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" required>
+                    <small>Mínimo 6 caracteres</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirm_password">Confirmar Contraseña</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">Registrarse</button>
             </form>
         </div>
         
         <div class="auth-footer">
-            <p>¿No tienes una cuenta? <a href="index.php?controller=Auth&action=register">Regístrate aquí</a></p>
+            <p>¿Ya tienes una cuenta? <a href="index.php?controller=Auth&action=login">Inicia sesión aquí</a></p>
         </div>
     </div>
 </div>

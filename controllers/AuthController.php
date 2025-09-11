@@ -13,6 +13,11 @@ class AuthController {
     }
 
     public function login() {
+         // Si ya está logueado, redirigir al dashboard
+        if (isset($_SESSION['user_id'])) {
+            header('Location: index.php?controller=Dashboard&action=index');
+            exit;
+        }
         session_start();
         
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -32,6 +37,13 @@ class AuthController {
             }
         } else {
             require_once 'views/auth/login.php';
+        }
+    }
+         public function register() {
+        // Si ya está logueado, redirigir al dashboard
+        if (isset($_SESSION['user_id'])) {
+            header('Location: index.php?controller=Dashboard&action=index');
+            exit;
         }
     }
 

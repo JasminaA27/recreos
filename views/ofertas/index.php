@@ -14,7 +14,9 @@ $ofertas = $ofertas ?? [];
             <li><a href="index.php?controller=Recreo&action=index"><i class="fas fa-store"></i> Recreos</a></li>
             <li><a href="index.php?controller=Oferta&action=index" class="active"><i class="fas fa-concierge-bell"></i> Ofertas</a></li>
             <li><a href="index.php?controller=Horario&action=index"><i class="fas fa-clock"></i> Horarios</a></li>
+            <li><a href="index.php?controller=User&action=index"><i class="fas fa-users"></i> Usuarios</a></li>
             <li><a href="index.php?controller=Auth&action=logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+            
         </ul>
     </div>
     

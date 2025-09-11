@@ -11,6 +11,7 @@ class DashboardController {
     private $oferta;
 
     public function __construct() {
+        
         $this->db = (new Database())->getConnection();
         $this->recreo = new Recreo($this->db);
         $this->oferta = new Oferta($this->db);
