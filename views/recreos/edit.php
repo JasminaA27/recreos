@@ -4,6 +4,8 @@
 include 'includes/header.php';
 ?>
 
+<link rel="stylesheet" href="assets/css/style.css"> <!-- Enlazamos el CSS -->
+
 <div class="dashboard">
     <!-- Sidebar -->
     <div class="sidebar">
@@ -102,3 +104,5 @@ include 'includes/header.php';
 <?php
 include 'includes/footer.php';
 ?>
+
+

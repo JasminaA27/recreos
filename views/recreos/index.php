@@ -12,7 +12,7 @@ include 'includes/header.php';
             <li><a href="index.php?controller=Recreo&action=index" class="active"><i class="fas fa-store"></i> Recreos</a></li>
             <li><a href="index.php?controller=Oferta&action=index"><i class="fas fa-concierge-bell"></i> Ofertas</a></li>
             <li><a href="index.php?controller=Horario&action=index"><i class="fas fa-clock"></i> Horarios</a></li>
-            <li><a href="#"><i class="fas fa-cog"></i> Configuración</a></li>
+          
             <li><a href="index.php?controller=Auth&action=logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
         </ul>
     </div>
@@ -20,92 +20,110 @@ include 'includes/header.php';
     <!-- Main Content -->
     <div class="main-content">
         <div class="content-header">
-            <h2>Gestión de Recreos</h2>
+            <h2>Lista de Recreos</h2>
             <div class="header-actions">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Buscar recreos...">
-                </div>
                 <a href="index.php?controller=Recreo&action=create" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Agregar Recreo
+                    <i class="fas fa-plus"></i> Nuevo Recreo
                 </a>
             </div>
         </div>
 
-        <!-- Mensajes de alerta -->
-        <?php if (isset($_SESSION['success'])): ?>
-            <div class="alert alert-success">
-                <?php echo $_SESSION['success']; unset($_SESSION['success']); ?>
-            </div>
-        <?php endif; ?>
-
-        <?php if (isset($_SESSION['error'])): ?>
-            <div class="alert alert-error">
-                <?php echo $_SESSION['error']; unset($_SESSION['error']); ?>
-            </div>
-        <?php endif; ?>
+        <!-- Búsqueda simple -->
+        <div class="search-section">
+            <input type="text" id="searchInput" placeholder="Buscar recreos..." class="search-input">
+            <select id="statusFilter" class="status-filter">
+                <option value="">Todos</option>
+                <option value="activo">Activo</option>
+                <option value="inactivo">Inactivo</option>
+            </select>
+        </div>
 
         <!-- Tabla de recreos -->
         <div class="card">
-            <div class="card-header">
-                <h3>Lista de Recreos</h3>
-            </div>
             <div class="card-body">
-                <div class="table-responsive">
-                    <table class="data-table">
+                <?php if (empty($recreos)): ?>
+                    <div class="empty-message">
+                        <p>No hay recreos registrados.</p>
+                        <a href="index.php?controller=Recreo&action=create" class="btn btn-primary">Agregar Recreo</a>
+                    </div>
+                <?php else: ?>
+                    <table class="simple-table">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>#</th>
                                 <th>Nombre</th>
-                                <th>Dirección</th>
                                 <th>Ubicación</th>
+                                <th>Dirección</th>
                                 <th>Teléfono</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <?php if (count($recreos) > 0): ?>
-                                <?php foreach ($recreos as $recreo): ?>
-                                    <tr>
-                                        <td><?php echo $recreo['id']; ?></td>
-                                        <td><?php echo $recreo['nombre']; ?></td>
-                                        <td><?php echo $recreo['direccion']; ?></td>
-                                        <td>
-                                            <span class="badge badge-<?php echo $recreo['ubicacion'] == 'Huanta' ? 'blue' : 'green'; ?>">
-                                                <?php echo $recreo['ubicacion']; ?>
-                                            </span>
-                                        </td>
-                                        <td><?php echo $recreo['telefono']; ?></td>
-                                        <td>
-                                            <span class="badge badge-<?php echo $recreo['estado'] == 'activo' ? 'success' : 'danger'; ?>">
-                                                <?php echo $recreo['estado']; ?>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <div class="action-buttons">
-                                                <a href="index.php?controller=Recreo&action=edit&id=<?php echo $recreo['id']; ?>" class="btn btn-sm btn-info">
-                                                    <i class="fas fa-edit"></i> Editar
-                                                </a>
-                                                <a href="index.php?controller=Recreo&action=delete&id=<?php echo $recreo['id']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de eliminar este recreo?');">
-                                                    <i class="fas fa-trash"></i> Eliminar
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="7" class="text-center">No hay recreos registrados.</td>
-                                </tr>
-                            <?php endif; ?>
+                        <tbody id="recreosTable">
+                            <?php 
+                            $totalRecreos = count($recreos);
+                            foreach ($recreos as $index => $recreo): 
+                            ?>
+                            <tr data-status="<?php echo $recreo['estado']; ?>">
+                                <td><?php echo $totalRecreos - $index; ?></td>
+                                <td class="recreo-name"><strong><?php echo htmlspecialchars($recreo['nombre']); ?></strong></td>
+                                <td><?php echo htmlspecialchars($recreo['ubicacion']); ?></td>
+                                <td><?php echo htmlspecialchars($recreo['direccion']); ?></td>
+                                <td><?php echo htmlspecialchars($recreo['telefono'] ?? '-'); ?></td>
+                                <td>
+                                    <span class="status <?php echo $recreo['estado']; ?>">
+                                        <?php echo ucfirst($recreo['estado']); ?>
+                                    </span>
+                                </td>
+                                <td class="actions">
+                                    <a href="index.php?controller=Recreo&action=edit&id=<?php echo $recreo['id']; ?>" 
+                                       class="btn-small btn-edit">Editar</a>
+                                    <button onclick="confirmDelete(<?php echo $recreo['id']; ?>)" 
+                                            class="btn-small btn-delete">Eliminar</button>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
-                </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+// Búsqueda simple
+document.getElementById('searchInput').addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#recreosTable tr');
+    
+    rows.forEach(row => {
+        const name = row.querySelector('.recreo-name').textContent.toLowerCase();
+        row.style.display = name.includes(searchTerm) ? '' : 'none';
+    });
+});
+
+// Filtro de estado
+document.getElementById('statusFilter').addEventListener('change', function() {
+    const status = this.value;
+    const rows = document.querySelectorAll('#recreosTable tr');
+    
+    rows.forEach(row => {
+        if (!status || row.dataset.status === status) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
+
+// Confirmación simple
+function confirmDelete(id) {
+    if (confirm('¿Eliminar este recreo?')) {
+        window.location.href = `index.php?controller=Recreo&action=delete&id=${id}`;
+    }
+}
+</script>
 
 <?php
 include 'includes/footer.php';

@@ -29,6 +29,14 @@ class Recreo {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Obtener todos los recreos ordenados por ID descendente (para numeración correlativa)
+    public function getAllOrdered() {
+        $query = "SELECT * FROM " . $this->table_name . " ORDER BY id DESC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     // Obtener un recreo por ID
     public function getById() {
         $query = "SELECT * FROM " . $this->table_name . " WHERE id = :id LIMIT 1";
@@ -151,5 +159,14 @@ class Recreo {
         $stmt->execute();
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Contar total de recreos para numeración correlativa
+    public function getTotalCount() {
+        $query = "SELECT COUNT(*) as total FROM " . $this->table_name;
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['total'];
     }
 }
