@@ -66,7 +66,7 @@ include 'includes/header.php';
                         </div>
 
                         <div class="form-group">
-                            <label for="especialidad">Especialidad</label>
+                            <label for="especialidad">Servicios</label>
                             <input type="text" id="especialidad" name="especialidad" placeholder="Especialidad gastronómica" class="form-input">
                         </div>
 
